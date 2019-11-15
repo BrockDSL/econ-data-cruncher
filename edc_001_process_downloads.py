@@ -6,7 +6,8 @@ from settings import *
 from bs4 import BeautifulSoup
 import os,sys
 import shutil
-import urllib2
+import urllib.request
+import urllib.error
 from array import array
 from bs4 import BeautifulSoup
 from types import *
@@ -33,37 +34,41 @@ log_file = open(LOG_BASE+TOC_PROCESS+"log.txt","a")
 can_files = os.listdir(html_data_in+"/")
 for html_c in can_files:
     val_count = 0
-    soupAN = BeautifulSoup(open(html_data_in+"/"+html_c))
+    with open(html_data_in+"/"+html_c,encoding="utf8") as fp:
+        soupAN = BeautifulSoup(fp,'lxml')
+    #soupAN = BeautifulSoup(open(html_data_in+"/"+html_c))
     ans = []
     #build list of ANs found in html candidate document
     for s in soupAN.findAll('cite'):
         ans.append(s.text[4:])
         #ans.sort()
-    print "\nProcessing...\n"+html_c+"\n"+ans[0]," : ",len(ans)
+    print ("\nProcessing...\n"+html_c+"\n"+ans[0]," : ",len(ans))
     #do the downloading
     tss = time()
     for an_index in ans:
         ua_string = uagents[randint(0,len(uagents)-1)]
         headers = {'User-agent': ua_string }
-        req = urllib2.Request(E_URL+str(an_index), None, headers)
-        html_result = urllib2.urlopen(req).read()
-        soupMD = BeautifulSoup(html_result)
-        brick = soupMD.find("dl")
+        print(E_URL+str(an_index))
+        req = urllib.request.Request(E_URL+str(an_index), None, headers)
+        html_result = urllib.request.urlopen(req).read()
+        soupMD = BeautifulSoup(html_result,'lxml')
+        brick = soupMD.find('dl')
+        print(brick)
         val_count += 1
         ofile = open(data_in+"/"+str(an_index)+".htm","w")
         ofile.write(brick.prettify().encode('utf8'))
         ofile.flush()
         ofile.close()
     time_delta = time() - tss
-    print"Downloaded in: "+str(time_delta)+" sec"
+    print("Downloaded in: "+str(time_delta)+" sec")
     report = "\n"+html_c+" : "+"Start AN: "+str(ans[0])+" offset of "+str(len(ans))+" records downloaded in "+str(time_delta)
     log_file.write(report)
     log_file.flush()
     try:
         shutil.move(html_data_in+"/"+html_c,html_data_out)
     except:
-        print html_data_in+"/"+html_c+" has already been processed"
+        print (html_data_in+"/"+html_c+" has already been processed")
         shutil.move(html_data_in+"/"+html_c,error_dir)
 
 log_file.close()
-print "\nfin"
+print ("\nfin")
