@@ -5,10 +5,11 @@ E_URL = "http://search.ebscohost.com/login.aspx?direct=true&db=bth&AN="
 
 #COUCH CONFIGS
 
+#see dylan/tim/anyone for access
 CDB_USER = ""
 CDB_PASSWORD = ""
 
-CDB_HOST = "http://"+CDB_USER+":"+CDB_PASSWORD+"@localhost:5984"
+CDB_HOST = "https://"+CDB_USER+":"+CDB_PASSWORD+"@rtod.library.brocku.ca:32771/econ_data/working"
 CDB_NAME = "econ_data_working"
 
 
@@ -27,3 +28,21 @@ AN_ERROR = "AN_error/"
 LOG_BASE = "logs/"
 TOC_PROCESS = "toc_process/"
 AN_PROCESS = "an_process/"
+
+
+# run once to create all directories need
+if __name__ == "__main__":
+    print("Creating directories...")
+    import os
+    cwd = os.getcwd()
+    os.makedirs(os.path.join(cwd,DATA_BASE), exist_ok = True)
+    os.makedirs(os.path.join(cwd,DATA_BASE,TOC_IN), exist_ok = True)
+    os.makedirs(os.path.join(cwd,DATA_BASE,TOC_OUT), exist_ok = True)
+    os.makedirs(os.path.join(cwd,DATA_BASE,TOC_ERROR), exist_ok = True)
+    os.makedirs(os.path.join(cwd,DATA_BASE,AN_IN), exist_ok = True)
+    os.makedirs(os.path.join(cwd,DATA_BASE,AN_OUT), exist_ok = True)
+    os.makedirs(os.path.join(cwd,DATA_BASE,AN_ERROR), exist_ok = True)
+    os.makedirs(os.path.join(cwd,LOG_BASE,TOC_PROCESS), exist_ok = True)
+    os.makedirs(os.path.join(cwd,LOG_BASE,AN_PROCESS), exist_ok = True)
+    print("done")
+
