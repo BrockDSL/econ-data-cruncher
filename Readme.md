@@ -19,6 +19,6 @@ update the connection settings with proper username and password
 ## HOWTO install CouchDB locally ##
 navigate to couchdb folder that contains settings.py
 
-run python settings.py install
+run 'python settings.py install'
 
 remember to update your sys path to the folder that you installed CouchDB to inside the python file you're using
