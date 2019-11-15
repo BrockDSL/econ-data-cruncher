@@ -1,5 +1,5 @@
 
-#Econ Data Cruncher#
+## Econ Data Cruncher ##
 
 Made with Python
 Install pre-reqs with *setup_linux*
@@ -8,3 +8,5 @@ Install pre-reqs with *setup_linux*
 - [Beautiful Soup](http://www.crummy.com/software/BeautifulSoup/#Download)
 - [CouchDB](https://couchdb.apache.org/)
 - [Couchpy](https://pypi.python.org/pypi/couchpy/0.2dev)
+
+Note: update settings.py with relevant authentication information on local cloned repository
