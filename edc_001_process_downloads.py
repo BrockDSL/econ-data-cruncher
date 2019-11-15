@@ -3,6 +3,7 @@
 #
 #
 from settings import *
+from requests_html import HTMLSession
 from bs4 import BeautifulSoup
 import os,sys
 import shutil
@@ -18,6 +19,11 @@ html_data_in = DATA_BASE+TOC_IN
 html_data_out = DATA_BASE+TOC_OUT
 data_in = DATA_BASE+AN_IN
 error_dir = DATA_BASE+TOC_ERROR
+
+session = HTMLSession()
+
+front_Link = "https://proxy.library.brocku.ca/login?url=http://search.ebscohost.com/login.aspx?direct=true&db=bth&AN="
+back_Link = "&site=ehost-live&scope=site"
 
 uagents = ['Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1468.0 Safari/537.36',
            'Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; Trident/6.0)',
@@ -42,15 +48,23 @@ for html_c in can_files:
     for s in soupAN.findAll('cite'):
         ans.append(s.text[4:])
         #ans.sort()
+        print(ans)
+    
     print ("\nProcessing...\n"+html_c+"\n"+ans[0]," : ",len(ans))
     #do the downloading
     tss = time()
     for an_index in ans:
-        ua_string = uagents[randint(0,len(uagents)-1)]
-        headers = {'User-agent': ua_string }
-        print(E_URL+str(an_index))
-        req = urllib.request.Request(E_URL+str(an_index), None, headers)
-        html_result = urllib.request.urlopen(req).read()
+        #ua_string = uagents[randint(0,len(uagents)-1)]
+        #headers = {'User-agent': ua_string }
+        #print(E_URL+str(an_index))
+        link = front_Link + str(an_index) + back_Link
+        print(link)
+        
+        req = session.get(link)
+        req.html.render()
+        print(req.html.html)
+
+        '''
         soupMD = BeautifulSoup(html_result,'lxml')
         brick = soupMD.find('dl')
         print(brick)
@@ -72,3 +86,4 @@ for html_c in can_files:
 
 log_file.close()
 print ("\nfin")
+'''
