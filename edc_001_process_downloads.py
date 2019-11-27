@@ -64,6 +64,8 @@ for html_c in can_files:
         req.html.render()
         print(req.html.html)
 
+        #below code is at a standstill, as we are having trouble scraping the screen from ebscohost
+        #see https://github.com/BrockDSL/econ-data-cruncher/issues/4
         '''
         soupMD = BeautifulSoup(html_result,'lxml')
         brick = soupMD.find('dl')
